@@ -9,8 +9,8 @@ def formulario(request):
         'titulo':'Formulario Reportes EconomiaDigital',
         'titulo_form': 'Por favor, elija 3 activos a reportar'
     }
-    activos = open( 'core/formulario'+ static('formulario/files/activos.txt'),'r')
     print('a')
+    activos = open( 'core/formulario'+ static('formulario/files/activos.txt'),'r')
     lista = list(map(lambda x: x.rstrip('\n'),activos.readlines()))
     activos.close()
     args['activos'] = lista
