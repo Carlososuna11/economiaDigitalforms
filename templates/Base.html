@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="http://fonts.googleapis.com/css?family=Lato:400,700" rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <title>{{titulo}}</title>
+        {% block Head %}
+        {% endblock Head %}
+        
+    </head>
+    <body>
+        <img class="img_title" src="{% static 'img/logo5.png' %}">
+        {% block Body %}
+        {% endblock Body %}
+    </body>
+</html>

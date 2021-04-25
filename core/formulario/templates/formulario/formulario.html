@@ -1,0 +1,119 @@
+{% extends 'Base.html' %}
+{% load static %}
+
+{% block Head %}
+    
+    <link rel="stylesheet" href="{% static 'formulario/css/style.css' %}?{% now 'U' %}">
+    <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+    {% comment %} <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> {% endcomment %}
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+    </script> 
+{% endblock Head %}
+{% block Body %}
+
+    
+    <div class="container">
+        <div class="titulo_formulario">
+            <h3>{{titulo_form}}</h3>
+        </div>
+        <div class="info">
+            <p>Consejo: Utiliza ctrl+F para buscar más rapido</p>
+        </div>
+        <div class="checkbox-containers">
+            {% for activo in activos %}
+                <div class="checkbox-container">
+                    <button onclick="checkbox_button(this,'{{activo}}');" class="black">{{activo|upper}}</button>
+                </div>
+            {% endfor %}
+        </div>
+        <form name="valform">
+            {% for activo in activos %}
+                <input type="checkbox" class="form-checkbox" name="{{activo}}" id="{{activo}}" value="{{activo}}">
+            {% endfor %}
+        </form>
+        <div class="info">
+            <p>Si deseas agregar algun otro activo, envianos un correo con el activo a agregar <a href="mailto:economiadigitalcoding@gmail.com">economiadigitalcoding@gmail.com</a> </p>
+        </div>
+        <div class="paybuttom">
+            <button onclick="reportar_seleccion('{% url 'reportar_seleccion' %}');">Procesar el Pago</button>
+        </div>
+    </div>
+
+    <script src="{% static 'formulario/js/script.js' %}?{% now 'U' %}"></script>
+    <script>
+        {% comment %} function handleErrors(res) {
+            if (!res.ok) throw new Error(res.error);
+            return res;
+        }
+        
+
+        function reportar_pago() {
+            var nombre = document.getElementById("nombre").value
+            var correo = document.getElementById("correo").value
+            if ((nombre == "") || (correo == "")){
+                alert("Completa los campos de entrada");
+            }else{
+                Swal.fire({
+                    title: 'Espere Por favor!',
+                    html: 'Espera mientras se procesa el pago',
+                    didOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+                fetch('{% url 'indicarpago' %}', {
+                    
+                    method: 'POST',
+                    headers: {
+                    'content-type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userid:{{userid}},
+                        product_id:'{{product_id}}',
+                        metodo_pago:'{{metodo_pago}}',
+                        nombre:nombre,
+                        correo:correo,
+                    })
+                }).then(function(res) {
+                    return res.json();
+                })
+                .then(handleErrors)
+                .then(function(res){
+                    Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Se Envio la Solicitud',
+                    showConfirmButton: false,
+                    timer: 1500
+                    }).then((res) => {window.close();});
+                })
+                .catch(function(err){
+                    Swal.fire({
+                    icon: 'error',
+                    title: 'Ups...',
+                    text: 'Parece que hay un error, Presiona Ok para intentar de nuevo',
+                    }).then((result) => {location.reload();});
+                });
+            }
+            
+        }
+
+        //This function displays Smart Payment Buttons on your web page. {% endcomment %}
+    </script>
+{% endblock Body %}
