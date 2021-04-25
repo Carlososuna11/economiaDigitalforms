@@ -10,8 +10,7 @@ def formulario(request):
         'titulo_form': 'Por favor, elija 3 activos a reportar'
     }
     try:
-        print(os.path.dirname(__file__))
-        activos = open('/staticfiles/formulario/files/activos.txt','r')
+        activos = open(os.path.join(os.path.dirname(__file__),'static','formulario','files','activos.txt'),'r')
         lista = list(map(lambda x: x.rstrip('\n'),activos.readlines()))
         activos.close()
         args['activos'] = lista
