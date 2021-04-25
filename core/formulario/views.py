@@ -9,13 +9,15 @@ def formulario(request):
         'titulo':'Formulario Reportes EconomiaDigital',
         'titulo_form': 'Por favor, elija 3 activos a reportar'
     }
-    print('a')
-    activos = open( 'core/formulario'+ static('formulario/files/activos.txt'),'r')
-    lista = list(map(lambda x: x.rstrip('\n'),activos.readlines()))
-    activos.close()
-    args['activos'] = lista
-    # return HttpResponseNotFound("<h1>Pagina No disponible</h1>")
-    return render(request,'formulario/formulario.html',args)
+    try:
+        activos = open( 'core/formulario'+ static('formulario/files/activos.txt'),'r')
+        lista = list(map(lambda x: x.rstrip('\n'),activos.readlines()))
+        activos.close()
+        args['activos'] = lista
+        # return HttpResponseNotFound("<h1>Pagina No disponible</h1>")
+        return render(request,'formulario/formulario.html',args)
+    except Exception as ex:
+        print(ex)
 
 def respuesta(request):
 
