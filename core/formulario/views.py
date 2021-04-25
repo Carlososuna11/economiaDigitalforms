@@ -21,7 +21,7 @@ def formulario(request):
 
 def respuesta(request):
 
-    archivo = open( '/staticfiles/formulario/files/resultados.json',"r")
+    archivo = open( os.path.join(os.path.dirname(__file__),'static','formulario','files','resultados.json'),"r")
     data = json.load(archivo)
     archivo.close()
     activos = json.loads(request.body)['activos']
@@ -30,7 +30,7 @@ def respuesta(request):
             data[activo] += 1
         else:
             data[activo] = 1
-    archivo = open('/staticfiles/formulario/files/resultados.json','w')
+    archivo = open(os.path.join(os.path.dirname(__file__),'static','formulario','files','resultados.json'),'w')
     json.dump(data, archivo,indent=4)
     archivo.close()
     data = {
