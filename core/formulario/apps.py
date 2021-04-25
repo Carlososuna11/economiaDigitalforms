@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class FormularioConfig(AppConfig):
-    name = 'formulario'
+    name = 'core.formulario'

@@ -1,0 +1,137 @@
+:root{
+    --accent-color: #641BFF;
+    --heading-font-family: 'Poppins', sans-serif;
+    --body-font-family: 'Lato', sans-serif;
+}
+
+.container{
+    min-height: 250px;
+    height: auto;
+    width: 95%;
+    max-width: 1000px;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0px 10px 50px rgba(90, 115, 255, 0.3);
+    margin: 2.5rem auto;
+    position:relative;
+    top: 25%;
+    overflow:hidden;
+    opacity: 95%;
+    
+}
+.paybuttom{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.paybuttom button{
+    padding: 15px 20px;
+    border: none;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #fff0e6;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-radius: 50px;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid #121212;
+    background: linear-gradient(147deg, #3f4046  0%, #121212 74%);
+}
+
+
+.checkbox-containers{
+    justify-content: center;
+    max-width: 100%;
+    margin: 1rem;
+    display: grid;
+    grid-gap: 0 0;
+    left:2rem;
+  }
+
+  @media (min-width: 300px){
+    .checkbox-containers { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 400px){
+    .checkbox-containers { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 600px){
+   .checkbox-containers { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  @media (min-width: 800px){
+    .checkbox-containers { grid-template-columns: repeat(5, 1fr); }
+   }
+
+   @media (min-width: 1000px){
+    .checkbox-containers { grid-template-columns: repeat(6, 1fr); }
+   }
+ 
+
+  /* @media (min-width: 570px){
+    .checkbox-containers { grid-template-columns: repeat(5, 1fr); }
+   }
+
+@media (min-width: 680px){
+    .checkbox-containers { grid-template-columns: repeat(6, 1fr); }
+}
+
+@media (min-width: 790px){
+    .checkbox-containers { grid-template-columns: repeat(7, 1fr); }
+}
+
+@media (min-width: 900px){
+    .checkbox-containers { grid-template-columns: repeat(8, 1fr); }
+}
+@media (min-width: 1014px){
+    .checkbox-containers { grid-template-columns: repeat(9, 1fr); }
+} */
+
+
+.form-checkbox{
+    display: none;
+}
+
+.checkbox-container button{
+    width: 100%;
+    padding: 15px 20px;
+    border: none;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    outline: none;
+    
+}
+
+.black{
+    border: 1px solid #121212;
+    background: #121212;
+    color: #fff0e6;
+}
+
+.orange{
+    border: 1px solid rgb(255, 145, 0);
+    background: rgb(255, 145, 0);
+    color: #121212;
+}
+
+.titulo_formulario{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h3{
+    text-transform: uppercase;
+}
+
+.info{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
