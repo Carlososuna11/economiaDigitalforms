@@ -3,13 +3,14 @@ from django.http.response import HttpResponse, JsonResponse,HttpResponseNotFound
 from django.shortcuts import render
 from django.templatetags.static import static
 import json
-
+import os
 def formulario(request):
     args= {
         'titulo':'Formulario Reportes EconomiaDigital',
         'titulo_form': 'Por favor, elija 3 activos a reportar'
     }
     try:
+        print(os.path.dirname(__file__))
         activos = open('/staticfiles/formulario/files/activos.txt','r')
         lista = list(map(lambda x: x.rstrip('\n'),activos.readlines()))
         activos.close()
@@ -21,7 +22,7 @@ def formulario(request):
 
 def respuesta(request):
 
-    archivo = open( 'core/formulario'+ static('formulario/files/resultados.json'),"r")
+    archivo = open( '/staticfiles/formulario/files/resultados.json',"r")
     data = json.load(archivo)
     archivo.close()
     activos = json.loads(request.body)['activos']
@@ -30,7 +31,7 @@ def respuesta(request):
             data[activo] += 1
         else:
             data[activo] = 1
-    archivo = open( 'core/formulario'+ static('formulario/files/resultados.json'),'w')
+    archivo = open('/staticfiles/formulario/files/resultados.json','w')
     json.dump(data, archivo,indent=4)
     archivo.close()
     data = {
