@@ -10,7 +10,6 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from .models import *
 import ast
 from django.contrib.auth import authenticate,login
-import telebot
 
 @ensure_csrf_cookie
 def formulario(request):
