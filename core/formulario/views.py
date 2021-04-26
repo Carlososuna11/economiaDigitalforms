@@ -20,21 +20,24 @@ def formulario(request):
         print(ex)
 
 def respuesta(request):
-
-    archivo = open( os.path.join(os.path.dirname(__file__),'static','formulario','files','resultados.json'),"r")
-    data = json.load(archivo)
-    archivo.close()
-    activos = json.loads(request.body)['activos']
-    for activo in activos:
-        if activo in data.keys():
-            data[activo] += 1
-        else:
-            data[activo] = 1
-    archivo = open(os.path.join(os.path.dirname(__file__),'static','formulario','files','resultados.json'),'w')
-    json.dump(data, archivo,indent=4)
-    archivo.close()
-    data = {
-        'ok':'ok'
-    }
-    return JsonResponse(data,status = http.HTTPStatus.OK)
+    try:
+        archivo = open( os.path.join(os.path.dirname(__file__),'static','formulario','files','resultados.json'),"r")
+        data = json.load(archivo)
+        archivo.close()
+        activos = json.loads(request.body)['activos']
+        for activo in activos:
+            if activo in data.keys():
+                data[activo] += 1
+            else:
+                data[activo] = 1
+        archivo = open(os.path.join(os.path.dirname(__file__),'static','formulario','files','resultados.json'),'w')
+        json.dump(data, archivo,indent=4)
+        archivo.close()
+        data = {
+            'ok':'ok'
+        }
+        return JsonResponse(data,status = http.HTTPStatus.OK)
+    except Exception as ex:
+        print(ex)
+    
 
