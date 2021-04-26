@@ -1,5 +1,5 @@
 env/
 db.sqlite3
 *.pyc
-migrations/*.py
+core/formulario/migrations/*.py
 !migrations/__init__.py
