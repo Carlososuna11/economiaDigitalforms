@@ -1,0 +1,98 @@
+{% extends 'Base.html' %}
+{% load static %}
+
+{% block Head %}
+    
+    <link rel="stylesheet" href="{% static 'formulario/css/style.css' %}?{% now 'U' %}">
+    <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+    </script>    
+{% endblock Head %}
+{% block Body %}
+
+    
+    <div class="container">
+        <form name="valform">
+            <div class="txtb">
+                <label>Nombre de Usuario :</label>
+                <input type="text" name="username" id="username" value="" maxlength="50" placeholder="Por Favor introduce el Nombre de Usuario" required>
+            </div>
+            <div class="txtb">
+                <label>Contraseña :</label>
+                <input type="password" name="password" id="password" value="" maxlength="50" required>
+            </div>
+        </form>
+        <div class="paybuttom">
+            <button onclick="reportar_pago()">Obtener Resultados</button>
+        </div>
+    </div>
+
+    <script>
+        function handleErrors(res) {
+            if (!res.ok) throw new Error(res.error);
+            return res;
+        }
+        
+
+        function reportar_pago() {
+            var usuario = document.getElementById("username").value
+            var password = document.getElementById("password").value
+            if ((usuario == "") || (password == "")){
+                alert("Completa los campos de entrada");
+            }else{
+                fetch("{% url 'procesar_solicitud' %}", {
+                    
+                    method: 'POST',
+                    headers: {
+                    'content-type': 'application/json',
+                    'X-CSRFToken':csrftoken,
+                    },
+                    body: JSON.stringify({
+                        usuario: usuario,
+                        password: password
+                    })
+                }).then(function(res) {
+                    return res.json();
+                })
+                .then(handleErrors)
+                .then(function(res){
+                    Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Listo',
+                    showConfirmButton: false,
+                    timer: 5000
+                    });
+                    window.location.replace("{% url 'resultados' %}");
+                })
+                .catch(function(err){
+                    Swal.fire({
+                    icon: 'error',
+                    title: 'Ups...',
+                    text: 'Parece que hay un error, Presiona Ok para intentar de nuevo',
+                    }).then((result) => {location.reload();});
+                });
+            }
+            
+        }
+
+        //This function displays Smart Payment Buttons on your web page.
+    </script>
+{% endblock Body %}

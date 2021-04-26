@@ -1,0 +1,147 @@
+{% extends 'Base.html' %}
+{% load static %}
+
+{% block Head %}
+    
+    <link rel="stylesheet" href="{% static 'formulario/css/style.css' %}?{% now 'U' %}">
+    <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+    </script>    
+{% endblock Head %}
+{% block Body %}
+
+    
+    <div class="container">
+    <div class="titulo_formulario">
+            <h3>Resultados</h3>
+        </div>
+        <table class="table table-dark">
+        <thead>
+            <tr>
+            <th scope="col">Activo</th>
+            <th scope="col">Votos</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for key,valor in resultados.items %}
+            <tr>
+            <th scope="row">{{key}}</th>
+            <td>{{valor}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+        <div class="paybuttom">
+            <button onclick="borrar_resultados();">Borrar Resultados</button>
+        </div>
+    </div>
+
+    <script>
+
+        function handleErrors(res) {
+            if (!res.ok) throw new Error(res.error);
+            return res;
+        }
+
+        function borrar_resultados(){
+            fetch("{% url 'delete_results' %}", {
+                method: 'POST',
+                    headers: {
+                    'content-type': 'application/json',
+                    'X-CSRFToken':csrftoken,
+                    },
+                    body: JSON.stringify({
+                        pk: 1,
+                    })
+                }).then(function(res) {
+                    return res.json();
+                })
+                .then(handleErrors)
+                .then(function(res){
+                    Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Listo',
+                    showConfirmButton: false,
+                    timer: 1500
+                    }).then((res) => {location.reload();});
+                })
+                .catch(function(err){
+                    Swal.fire({
+                    icon: 'error',
+                    title: 'Ups...',
+                    text: 'Parece que hay un error, Presiona Ok para intentar de nuevo',
+                    }).then((result) => {location.reload();});
+                });
+        }
+        {% comment %} function handleErrors(res) {
+            if (!res.ok) throw new Error(res.error);
+            return res;
+        }
+        
+        
+        function reportar_pago() {
+            var usuario = document.getElementById("username").value
+            var password = document.getElementById("password").value
+            if ((usuario == "") || (password == "")){
+                alert("Completa los campos de entrada");
+            }else{
+                fetch("{% url 'procesar_solicitud' %}", {
+                    
+                    method: 'POST',
+                    headers: {
+                    'content-type': 'application/json',
+                    'X-CSRFToken':csrftoken,
+                    },
+                    body: JSON.stringify({
+                        usuario: usuario,
+                        password: password
+                    })
+                }).then(function(res) {
+                    return res.json();
+                })
+                .then(handleErrors)
+                .then(function(res){
+                    Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Listo',
+                    showConfirmButton: false,
+                    timer: 1500
+                    }).then((res) => {window.close();});
+                })
+                .catch(function(err){
+                    Swal.fire({
+                    icon: 'error',
+                    title: 'Ups...',
+                    text: 'Parece que hay un error, Presiona Ok para intentar de nuevo',
+                    }).then((result) => {location.reload();});
+                });
+            }
+            
+        } {% endcomment %}
+
+        //This function displays Smart Payment Buttons on your web page.
+    </script>
+{% endblock Body %}
