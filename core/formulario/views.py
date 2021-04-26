@@ -4,6 +4,9 @@ from django.shortcuts import render
 from django.templatetags.static import static
 import json
 import os
+from django.views.decorators.csrf import ensure_csrf_cookie
+
+@ensure_csrf_cookie
 def formulario(request):
     args= {
         'titulo':'Formulario Reportes EconomiaDigital',
