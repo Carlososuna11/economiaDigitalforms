@@ -33,10 +33,10 @@ def formulario(request):
         if week not in [6,0,3]:
             return HttpResponseNotFound(mensaje)
         if week == 6:
-            if hora < 2 or hora > 5:
+            if hora < 14 or hora > 17:
                 return HttpResponseNotFound(mensaje)
         else:
-            if hora < 5 or hora > 10:
+            if hora < 17 or hora > 22:
                 return HttpResponseNotFound(mensaje)
         activos = open(os.path.join(os.path.dirname(__file__),'static','formulario','files','activos.txt'),'r')
         lista = list(map(lambda x: x.rstrip('\n'),activos.readlines()))
