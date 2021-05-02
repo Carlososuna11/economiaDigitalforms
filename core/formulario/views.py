@@ -10,6 +10,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from .models import *
 import ast
 from django.contrib.auth import authenticate,login
+import datetime
 
 @ensure_csrf_cookie
 def formulario(request):
@@ -18,6 +19,25 @@ def formulario(request):
         'titulo_form': 'Por favor, elija 3 activos a reportar'
     }
     try:
+        hora = int(datetime.datetime.now().strftime("%H"))
+        week = datetime.datetime.now().weekday()
+        mensaje = """
+        <h1>Pagina No disponible fuera del Horario</h1>
+        <h3>El horario del formulario es</3>
+        <ul>
+        <li>Domingo: 2pm - 5pm</li>
+        <li>Lunes: 5pm - 10:00pm</li>
+        <li>Miercoles: 5pm - 10:00pm</li>
+        </ul>
+        """
+        if week not in [6,0,3]:
+            return HttpResponseNotFound(mensaje)
+        if week == 6:
+            if hora < 2 or hora > 5:
+                return HttpResponseNotFound(mensaje)
+        else:
+            if hora < 5 or hora > 10:
+                return HttpResponseNotFound(mensaje)
         activos = open(os.path.join(os.path.dirname(__file__),'static','formulario','files','activos.txt'),'r')
         lista = list(map(lambda x: x.rstrip('\n'),activos.readlines()))
         activos.close()
