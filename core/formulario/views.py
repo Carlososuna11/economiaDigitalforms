@@ -30,7 +30,7 @@ def formulario(request):
         <li>Miercoles: 5am - 11:00am</li>
         </ul>
         """
-        if week not in [6,0,3]:
+        if week not in [6,0,2]:
             return HttpResponseNotFound(mensaje)
         if week == 6:
             if hora < 14 or hora > 17:
