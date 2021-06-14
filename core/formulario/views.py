@@ -25,18 +25,17 @@ def formulario(request):
         <h1>Pagina No disponible fuera del Horario</h1>
         <h3>El horario del formulario es</3>
         <ul>
-        <li>Domingo: 2pm - 5pm</li>
-        <li>Lunes: 5am - 11:00am</li>
-        <li>Miercoles: 5am - 11:00am</li>
+        <li>Lunes: 6pm - 11pm</li>
+        <li>Martes: 9:30am - 2pm</li>
         </ul>
         """
-        if week not in [6,0,2]:
+        if week not in [0,1]:
             return HttpResponseNotFound(mensaje)
-        if week == 6:
-            if hora < 14 or hora > 17:
+        if week == 0:
+            if hora < 18 or hora > 22:
                 return HttpResponseNotFound(mensaje)
         else:
-            if hora < 5 or hora > 11:
+            if hora < 9 or hora > 14:
                 return HttpResponseNotFound(mensaje)
         activos = open(os.path.join(os.path.dirname(__file__),'static','formulario','files','activos.txt'),'r')
         lista = list(map(lambda x: x.rstrip('\n'),activos.readlines()))
